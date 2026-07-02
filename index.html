@@ -10,17 +10,44 @@
     <div class="game-wrapper">
         <h1 class="game-title">Water Drop</h1>
         <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
+
         <div class="score-panel">
             <div class="score">Score: <span id="score">0</span></div>
             <div class="timer">Time: <span id="time">30</span>s</div>
+
+            <label for="difficulty">Difficulty:</label>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+
             <button id="start-btn">Start Game</button>
             <button id="reset-btn">Reset Game</button>
         </div>
-        
+
+        <p id="milestone-message"></p>
+
         <div id="game-container">
         </div>
     </div>
-    
+
+    <footer class="footer">
+        <p>
+            Learn more about <strong>charity: water's mission</strong>
+        </p>
+
+        <p>
+            <a href="https://www.charitywater.org" target="_blank">
+                Visit charity: water
+            </a>
+            |
+            <a href="https://www.charitywater.org/donate" target="_blank">
+                Donate Today
+            </a>
+        </p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>

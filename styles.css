@@ -149,3 +149,41 @@ body {
   background: #6b7280;
   border: 3px solid #374151;
 }
+
+#difficulty {
+    padding: 8px 12px;
+    margin: 0 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+
+/* style footer */
+.footer {
+    margin-top: 30px;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.footer a {
+    color: #FFC907;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+#milestone-message {
+    height: 30px;
+    margin: 15px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FFC907;
+}

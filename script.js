@@ -11,6 +11,32 @@ let timeLeft = 30;
 let timer;
 const timerDisplay = document.getElementById("time");
 
+//Milestone
+const milestoneMessage = document.getElementById("milestone-message");
+
+// Difficulty settings
+const difficultySelect = document.getElementById("difficulty");
+
+let winScore = 20;
+let dropSpeed = 4;
+let badDropChance = 0.25;
+let dropInterval = 1000;
+
+let gameTime = 30;
+
+
+// Milestone messages
+const milestones = [
+  { score: 5, message: "💧 Great start!" },
+  { score: 10, message: "🌎 Halfway there!" },
+  { score: 15, message: "🚰 You're making a difference!" },
+  { score: 20, message: "🎉 Amazing work!" }
+];
+
+
+// Sound effect
+const dropSound = new Audio("sounds/drop.mp3");
+dropSound.volume = 0.5;
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
@@ -23,16 +49,17 @@ function startGame() {
   if (gameRunning) return;
 
   gameRunning = true;
+  setDifficulty();
 
   // Reset timer and score
-  timeLeft = 30;
+  timeLeft = gameTime;
   score = 0;
 
   timerDisplay.textContent = timeLeft;
   scoreDisplay.textContent = score;
 
   // Create new drops every second (1000 milliseconds)
-  dropMaker = setInterval(createDrop, 1000);
+  dropMaker = setInterval(createDrop, dropInterval);
 
   //starts the countdown
   timer = setInterval(updateTimer, 1000);
@@ -41,7 +68,7 @@ function startGame() {
 function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
-  const isBadDrop = Math.random() < 0.25;
+  const isBadDrop = Math.random() < badDropChance;
 
   if (isBadDrop) {
     drop.className = "water-drop bad-drop";
@@ -51,6 +78,10 @@ function createDrop() {
 
   // Add points when player clicks a drop
   drop.addEventListener("click", () => {
+
+    dropSound.currentTime = 0;
+    dropSound.play();
+
     if (isBadDrop) {
       score--;
     } else {
@@ -62,6 +93,7 @@ function createDrop() {
     }
 
     scoreDisplay.textContent = score;
+    checkMilestone();
     drop.remove();
   });
 
@@ -77,8 +109,8 @@ function createDrop() {
   const xPosition = Math.random() * (gameWidth - 60);
   drop.style.left = xPosition + "px";
 
-  // Make drops fall for 4 seconds
-  drop.style.animationDuration = "4s";
+  // Make drops fall for the drop speed
+  drop.style.animationDuration = dropSpeed + "s";
 
   // Add the new drop to the game screen
   document.getElementById("game-container").appendChild(drop);
@@ -114,10 +146,10 @@ function endGame() {
     drop.remove();
   });
 
-  if (score >= 20) {
+  if (score >= winScore) {
     alert("🎉 Congratulations! You collected enough clean water and won!");
   } else {
-    alert("💧 Time's up! You scored less than 20 points. Try again!");
+    alert(`💧 Time's up! You needed ${winScore} points. Try again!`);
   }
 }
 
@@ -129,7 +161,8 @@ function resetGame() {
 
   gameRunning = false;
   score = 0;
-  timeLeft = 30;
+  setDifficulty();
+  timeLeft = gameTime;
 
   scoreDisplay.textContent = score;
   timerDisplay.textContent = timeLeft;
@@ -137,5 +170,47 @@ function resetGame() {
   const drops = document.querySelectorAll(".water-drop");
   drops.forEach((drop) => {
     drop.remove();
+  });
+}
+
+
+function setDifficulty() {
+  const difficulty = difficultySelect.value;
+
+  if (difficulty === "easy") {
+    winScore = 15;
+    gameTime = 35;
+    dropSpeed = 5;
+    badDropChance = 0.15;
+    dropInterval = 1100;
+  } else if (difficulty === "normal") {
+    winScore = 20;
+    gameTime = 30;
+    dropSpeed = 4;
+    badDropChance = 0.25;
+    dropInterval = 1000;
+  } else if (difficulty === "hard") {
+    winScore = 25;
+    gameTime = 25;
+    dropSpeed = 3;
+    badDropChance = 0.35;
+    dropInterval = 800;
+  }
+}
+
+
+function checkMilestone() {
+  milestones.forEach((milestone) => {
+
+    if (score === milestone.score) {
+
+      milestoneMessage.textContent = milestone.message;
+
+      setTimeout(() => {
+        milestoneMessage.textContent = "";
+      }, 2000);
+
+    }
+
   });
 }
